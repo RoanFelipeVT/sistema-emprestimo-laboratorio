@@ -18,7 +18,7 @@ Instale o Python 3.10 ou superior na máquina.
 ### 2. Clonar o projeto
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone <https://github.com/RoanFelipeVT/sistema-emprestimo-laboratorio/edit/main/README.md>
 ```
 
 ### 3. Entrar na pasta do projeto
