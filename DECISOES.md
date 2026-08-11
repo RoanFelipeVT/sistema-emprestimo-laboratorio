@@ -1,4 +1,3 @@
-
 # 1. Decisões assumidas
 
 ## 1.1 Prazo padrão de empréstimo
@@ -285,81 +284,25 @@ A pergunta é relevante porque altera o fluxo de cadastro e a forma como os dado
 
 ## 3.1 Bloqueio de empréstimo por pendência
 
-**Entrada:** aluno cadastrado com pelo menos um empréstimo cujo status seja `EMPRESTADO` e cuja data prevista de devolução seja anterior à data atual e que ainda não tenha sido devolvido → o aluno solicita um novo equipamento.
+**Entrada:** aluno cadastrado e autenticado possui um empréstimo com status `EMPRESTADO` e data prevista de devolução anterior à data atual. O aluno tenta solicitar um novo equipamento disponível.
 
-**Resultado esperado:** o sistema recusa a solicitação e nenhum novo empréstimo é registrado para o aluno.
+**Resultado esperado:** o sistema recusa a solicitação com indicação de pendência, e nenhum novo registro de empréstimo é criado para o aluno.
 
 ---
 
 ## 3.2 Registro de empréstimo
 
-**Entrada:** aluno cadastrado e autenticado solicita um equipamento que possui disponibilidade e atende às regras de empréstimo.
+**Entrada:** aluno cadastrado e autenticado, sem pendências e dentro do limite de equipamentos emprestados, solicita um equipamento com quantidade disponível maior que zero.
 
-**Resultado esperado:** o sistema registra imediatamente um novo empréstimo com status `EMPRESTADO`, gera seu identificador, registra a data do empréstimo e calcula a data prevista de devolução conforme o prazo configurado para o equipamento.
-
----
-
-## 3.3 Equipamento indisponível
-
-**Entrada:** aluno solicita um equipamento cuja quantidade disponível seja igual a zero.
-
-**Resultado esperado:** o sistema recusa a solicitação e nenhum novo empréstimo é registrado.
+**Resultado esperado:** o sistema cria um novo registro de empréstimo com status `EMPRESTADO`, registra a data do empréstimo e calcula a data prevista de devolução conforme o prazo configurado para o equipamento.
 
 ---
 
-## 3.4 Registro de devolução
+## 3.3 Registro de devolução
 
-**Entrada:** administrador informa um empréstimo ativo existente e registra sua devolução.
+**Entrada:** administrador seleciona um empréstimo existente com status `EMPRESTADO` e registra sua devolução.
 
-**Resultado esperado:** o empréstimo passa para o status `DEVOLVIDO`, recebe uma data de devolução e deixa de ser considerado um empréstimo ativo.
-
----
-
-## 3.5 Nova solicitação após devolução
-
-**Entrada:** um equipamento foi devolvido e possui um prazo configurado para nova solicitação que ainda não terminou → um aluno solicita esse equipamento.
-
-**Resultado esperado:** o sistema recusa a solicitação enquanto o prazo configurado não tiver terminado.
-
----
-
-## 3.6 Remoção de equipamento com empréstimo ativo
-
-**Entrada:** administrador tenta remover um equipamento que possui pelo menos um empréstimo com status `EMPRESTADO`.
-
-**Resultado esperado:** o sistema recusa a remoção e informa que o equipamento não pode ser removido enquanto estiver associado a um empréstimo ativo.
-
----
-
-## 3.7 Remoção de equipamento sem empréstimo ativo
-
-**Entrada:** administrador tenta remover um equipamento que não possui nenhum empréstimo com status `EMPRESTADO`.
-
-**Resultado esperado:** o equipamento é removido do cadastro, permanecendo preservado o histórico de empréstimos já devolvidos associado a ele.
-
----
-
-## 3.8 Alteração de equipamento
-
-**Entrada:** administrador informa um equipamento existente e fornece novos dados válidos.
-
-**Resultado esperado:** os dados do equipamento são atualizados e permanecem disponíveis após o encerramento e reinício do sistema.
-
----
-
-## 3.9 Alteração de devolução
-
-**Entrada:** administrador seleciona um empréstimo com status `DEVOLVIDO` e informa uma nova data de devolução válida.
-
-**Resultado esperado:** a data de devolução do empréstimo é atualizada e a informação de última devolução do equipamento também é atualizada.
-
----
-
-## 3.10 Relatório de atrasos
-
-**Entrada:** existem no sistema dois empréstimos ativos, sendo um com data prevista de devolução anterior à data atual e outro com data prevista de devolução posterior à data atual → administrador solicita o relatório de atrasos.
-
-**Resultado esperado:** o relatório contém somente o empréstimo em atraso e apresenta aluno, equipamento, data do empréstimo, data prevista de devolução e quantidade de dias de atraso.
+**Resultado esperado:** o empréstimo passa para o status `DEVOLVIDO`, recebe a data de devolução informada e deixa de ser considerado um empréstimo ativo, aumentando novamente a quantidade disponível do equipamento.
 
 ---
 
@@ -373,6 +316,13 @@ Essa decisão não foi solicitada explicitamente pelo grupo no pedido inicial. E
 
 Entretanto, essa decisão pode ser inadequada para o cliente porque uma senha padrão simples como `admin` não é adequada para um sistema real. Por isso, foi definida adicionalmente a exigência de que o administrador **altere a senha padrão no primeiro acesso**.
 
+Outra decisão introduzida durante a implementação foi a utilização de uma **interface de linha de comando com menus**, em vez de uma interface web ou gráfica. Essa escolha é plausível porque o enunciado permite explicitamente interfaces de linha de comando, e a CLI permite implementar o escopo mínimo com menor complexidade. A escolha foi posteriormente revisada pelo grupo e mantida conscientemente.
+
+Também foi definida durante a implementação a regra de que **equipamentos não podem ser removidos enquanto estiverem associados a empréstimos ativos**. Essa regra evita que um equipamento atualmente utilizado por um aluno seja excluído do cadastro e deixe um empréstimo ativo sem uma referência válida ao equipamento.
+
+Outra decisão implementada foi a ausência de um fluxo de aprovação administrativa. As solicitações aceitas pelo sistema são registradas diretamente como `EMPRESTADO`, não existindo o estado `PENDENTE`. Essa escolha simplifica o fluxo de empréstimo e evita a criação de uma etapa administrativa que não foi exigida pelo pedido.
+
+As decisões geradas ou sugeridas pela ferramenta de IA foram revisadas pelo grupo e incorporadas somente quando consideradas adequadas ao escopo e às decisões assumidas no projeto.
 
 ---
 
