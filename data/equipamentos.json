@@ -1,0 +1,29 @@
+[
+    {
+        "id": 10,
+        "nome": "Monitor",
+        "categoria": "Eletrônico",
+        "quantidade": 2,
+        "prazo_devolucao": 8,
+        "prazo_resolicitacao": 4,
+        "ultima_devolucao": null
+    },
+    {
+        "id": 9,
+        "nome": "Chave Philips",
+        "categoria": "Ferramentas",
+        "quantidade": 3,
+        "prazo_devolucao": 5,
+        "prazo_resolicitacao": 3,
+        "ultima_devolucao": null
+    },
+    {
+        "id": 21,
+        "nome": "Abacaxi",
+        "categoria": "Pik",
+        "quantidade": 10,
+        "prazo_devolucao": 2,
+        "prazo_resolicitacao": 2,
+        "ultima_devolucao": null
+    }
+]
