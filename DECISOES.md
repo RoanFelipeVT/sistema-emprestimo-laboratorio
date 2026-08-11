@@ -373,13 +373,6 @@ Essa decisão não foi solicitada explicitamente pelo grupo no pedido inicial. E
 
 Entretanto, essa decisão pode ser inadequada para o cliente porque uma senha padrão simples como `admin` não é adequada para um sistema real. Por isso, foi definida adicionalmente a exigência de que o administrador **altere a senha padrão no primeiro acesso**.
 
-Outra decisão introduzida durante a implementação foi a utilização de uma **interface de linha de comando com menus**, em vez de uma interface web ou gráfica. Essa escolha é plausível porque o enunciado permite explicitamente interfaces de linha de comando, e a CLI permite implementar o escopo mínimo com menor complexidade. A escolha foi posteriormente revisada pelo grupo e mantida conscientemente.
-
-Também foi definida durante a implementação a regra de que **equipamentos não podem ser removidos enquanto estiverem associados a empréstimos ativos**. Essa regra evita que um equipamento atualmente utilizado por um aluno seja excluído do cadastro e deixe um empréstimo ativo sem uma referência válida ao equipamento.
-
-Outra decisão implementada foi a ausência de um fluxo de aprovação administrativa. As solicitações aceitas pelo sistema são registradas diretamente como `EMPRESTADO`, não existindo o estado `PENDENTE`. Essa escolha simplifica o fluxo de empréstimo e evita a criação de uma etapa administrativa que não foi exigida pelo pedido.
-
-As decisões geradas ou sugeridas pela ferramenta de IA foram revisadas pelo grupo e incorporadas somente quando consideradas adequadas ao escopo e às decisões assumidas no projeto.
 
 ---
 
