@@ -1,17 +1,17 @@
 [
     {
-        "matricula": "20232015020061",
-        "senha": "abacat",
-        "nome": "Roan Felipe Vizon Torquato"
+        "matricula": "1234",
+        "senha": "abcd",
+        "nome": "aluno"
     },
     {
-        "matricula": "2",
-        "senha": "abcd",
-        "nome": "Room"
+        "matricula": "5678",
+        "senha": "efgh",
+        "nome": "aluno teste"
     },
     {
-        "matricula": "0",
-        "senha": "abcd",
-        "nome": "Abc"
+        "matricula": "9012",
+        "senha": "ijkl",
+        "nome": "aluno teste 2"
     }
 ]

@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from datetime import datetime
 
 from src.cli.input_utils import (
     ler_texto,
@@ -356,31 +357,31 @@ class Menu:
             )
 
             print(
-                f"ID: {equipamento.id} | "
-                f"Nome: {equipamento.nome} | "
-                f"Categoria: {equipamento.categoria} | "
+                f"\nID: {equipamento.id}\n"
+                f"Nome: {equipamento.nome}\n"
+                f"Categoria: {equipamento.categoria}\n"
                 f"Disponíveis: "
-                f"{quantidade}/{equipamento.quantidade} | "
+                f"{quantidade}/{equipamento.quantidade}\n"
                 f"Prazo padrão de devolução: "
-                f"{equipamento.prazo_devolucao} dias | "
+                f"{equipamento.prazo_devolucao} dias\n"
                 f"Prazo padrão para novo empréstimo: "
                 f"{equipamento.prazo_resolicitacao} dias"
             )
+
+            print()
 
         pausar()
 
     def cadastrar_equipamento(self):
         print("\n======= CADASTRO DE EQUIPAMENTO =======")
 
-        id_equipamento = ler_inteiro("ID: ")
         nome = ler_texto("Nome: ")
         categoria = ler_texto("Categoria: ")
 
         while True:
-            entrada_prazo = ler_texto(
-                "Prazo padrão de devolução "
-                "[7 dias]: "
-            )
+            entrada_prazo = input(
+                "Prazo padrão de devolução [7 dias]: "
+            ).strip()
 
             if entrada_prazo == "":
                 prazo = 7
@@ -402,15 +403,24 @@ class Menu:
                     "Digite um número inteiro válido."
                 )
 
-        quantidade = ler_inteiro(
-            "Quantidade: "
-        )
+        while True:
+            quantidade = ler_inteiro(
+                "Quantidade: "
+            )
+
+            if quantidade <= 0:
+                print(
+                    "A quantidade deve ser maior que zero."
+                )
+                continue
+
+            break
 
         while True:
-            entrada_requisicao = ler_texto(
+            entrada_requisicao = input(
                 "Prazo padrão para novo empréstimo "
                 "após devolução [0 dias]: "
-            )
+            ).strip()
 
             if entrada_requisicao == "":
                 prazo_resolicitacao = 0
@@ -435,21 +445,42 @@ class Menu:
                 )
 
         try:
-            equipamento = Equipamento(
-                id=id_equipamento,
-                nome=nome,
-                categoria=categoria,
-                quantidade=quantidade,
-                prazo_devolucao=prazo,
-                prazo_resolicitacao=prazo_resolicitacao
-            )
+            equipamentos = self.equipamento_service.listar()
 
-            self.equipamento_service.cadastrar(
-                equipamento
-            )
+            ids_existentes = {
+                equipamento.id
+                for equipamento in equipamentos
+            }
+
+            proximo_id = 1
+
+            while proximo_id in ids_existentes:
+                proximo_id += 1
+
+            for _ in range(quantidade):
+
+                while proximo_id in ids_existentes:
+                    proximo_id += 1
+
+                equipamento = Equipamento(
+                    id=proximo_id,
+                    nome=nome,
+                    categoria=categoria,
+                    quantidade=1,
+                    prazo_devolucao=prazo,
+                    prazo_resolicitacao=prazo_resolicitacao
+                )
+
+                self.equipamento_service.cadastrar(
+                    equipamento
+                )
+
+                ids_existentes.add(proximo_id)
+                proximo_id += 1
 
             print(
-                "Equipamento cadastrado com sucesso."
+                f"\n{quantidade} equipamento(s) "
+                "cadastrado(s) com sucesso."
             )
 
         except ValueError as erro:
@@ -487,10 +518,10 @@ class Menu:
         )
 
         while True:
-            entrada_prazo = ler_texto(
+            entrada_prazo = input(
                 f"Prazo padrão de devolução "
                 f"[atual: {equipamento.prazo_devolucao} dias]: "
-            )
+            ).strip()
 
             if entrada_prazo == "":
                 prazo = equipamento.prazo_devolucao
@@ -513,11 +544,12 @@ class Menu:
                 )
 
         while True:
-            entrada_requisicao = ler_texto(
+            entrada_requisicao = input(
                 f"Prazo padrão para novo empréstimo "
+                f"após devolução "
                 f"[atual: "
                 f"{equipamento.prazo_resolicitacao} dias]: "
-            )
+            ).strip()
 
             if entrada_requisicao == "":
                 prazo_resolicitacao = (
@@ -692,11 +724,13 @@ class Menu:
             )
 
             print(
-                f"Aluno: {aluno.nome}"
+                f"Aluno: "
+                f"{aluno.nome if aluno else 'Desconhecido'}"
             )
 
             print(
-                f"Equipamento: {equipamento.nome}"
+                f"Equipamento: "
+                f"{equipamento.nome if equipamento else 'Desconhecido'}"
             )
 
             print(
@@ -760,8 +794,10 @@ class Menu:
 
             print(
                 f"ID: {emprestimo.id} | "
-                f"Aluno: {aluno.nome} | "
-                f"Equipamento: {equipamento.nome}"
+                f"Aluno: "
+                f"{aluno.nome if aluno else 'Desconhecido'} | "
+                f"Equipamento: "
+                f"{equipamento.nome if equipamento else 'Desconhecido'}"
             )
 
         id_emprestimo = ler_inteiro(
@@ -817,11 +853,13 @@ class Menu:
             )
 
             print(
-                f"Aluno: {aluno.nome}"
+                f"Aluno: "
+                f"{aluno.nome if aluno else 'Desconhecido'}"
             )
 
             print(
-                f"Equipamento: {equipamento.nome}"
+                f"Equipamento: "
+                f"{equipamento.nome if equipamento else 'Desconhecido'}"
             )
 
             print(
@@ -911,7 +949,7 @@ class Menu:
 
             print(
                 f"Equipamento: "
-                f"{equipamento.nome}"
+                f"{equipamento.nome if equipamento else 'Desconhecido'}"
             )
 
             print(
@@ -959,7 +997,7 @@ class Menu:
 
             print(
                 f"Equipamento: "
-                f"{equipamento.nome}"
+                f"{equipamento.nome if equipamento else 'Desconhecido'}"
             )
 
             print(
@@ -970,22 +1008,73 @@ class Menu:
         pausar()
 
     def mostrar_pendencias(self, aluno):
-        possui = (
+        atrasados = (
             self.emprestimo_service
-            .possui_pendencia(
+            .emprestimos_atrasados_do_aluno(
                 aluno.matricula
             )
         )
 
         print("\n======= MINHAS PENDÊNCIAS =======")
 
-        if possui:
-            print(
-                "Você possui empréstimos em atraso."
-            )
-        else:
+        if not atrasados:
             print(
                 "Você não possui empréstimos em atraso."
+            )
+            pausar()
+            return
+
+        print(
+            f"Você possui {len(atrasados)} "
+            f"empréstimo(s) em atraso:"
+        )
+
+        for emprestimo in atrasados:
+
+            equipamento = (
+                self.equipamento_service
+                .buscar_por_id(
+                    emprestimo.id_equipamento
+                )
+            )
+
+            data_prevista = datetime.fromisoformat(
+                emprestimo.data_prevista_devolucao
+            ).date()
+
+            dias_atraso = (
+                datetime.now().date() - data_prevista
+            ).days
+
+            print(
+                "\n--------------------------------"
+            )
+
+            print(
+                f"ID do empréstimo: "
+                f"{emprestimo.id}"
+            )
+
+            print(
+                f"Equipamento: "
+                f"{equipamento.nome}"
+                if equipamento
+                else "Equipamento: Desconhecido"
+            )
+
+            print(
+                f"Data do empréstimo: "
+                f"{emprestimo.data_emprestimo}"
+            )
+
+            print(
+                f"Devolução prevista: "
+                f"{emprestimo.data_prevista_devolucao}"
+            )
+
+            print(
+                f"Dias de atraso: "
+                f"{dias_atraso}"
             )
 
         pausar()

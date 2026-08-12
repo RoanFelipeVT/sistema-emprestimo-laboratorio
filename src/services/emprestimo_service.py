@@ -1,3 +1,5 @@
+# src/services/emprestimo_service.py
+
 import json
 import os
 from datetime import datetime, timedelta
@@ -116,6 +118,27 @@ class EmprestimoService:
 
         return False
 
+    def emprestimos_atrasados_do_aluno(self, matricula):
+        hoje = datetime.now().date()
+        atrasados = []
+
+        for emprestimo in self.emprestimos:
+
+            if (
+                emprestimo.matricula_aluno == matricula
+                and emprestimo.status
+                == Emprestimo.STATUS_EMPRESTADO
+                and emprestimo.data_prevista_devolucao
+            ):
+                data_prevista = datetime.fromisoformat(
+                    emprestimo.data_prevista_devolucao
+                ).date()
+
+                if data_prevista < hoje:
+                    atrasados.append(emprestimo)
+
+        return atrasados
+
     # =========================
     # EMPRÉSTIMOS ATIVOS
     # =========================
@@ -162,17 +185,6 @@ class EmprestimoService:
         matricula,
         id_equipamento
     ):
-        """
-        O aluno solicita diretamente o equipamento.
-
-        Se todas as regras forem atendidas,
-        o empréstimo é registrado imediatamente
-        como EMPRESTADO.
-
-        Não existe etapa de aprovação
-        do administrador.
-        """
-
         aluno = (
             self.aluno_service
             .buscar_por_matricula(matricula)
@@ -183,13 +195,11 @@ class EmprestimoService:
                 "Aluno não encontrado."
             )
 
-        # Verifica se o aluno possui equipamento atrasado.
         if self.possui_pendencia(matricula):
             raise ValueError(
                 "Aluno possui empréstimo em atraso."
             )
 
-        # Verifica limite de equipamentos.
         if (
             self.quantidade_ativos(matricula)
             >= self.limite_emprestimos
@@ -199,7 +209,6 @@ class EmprestimoService:
                 f"{self.limite_emprestimos} equipamentos."
             )
 
-        # Procura o equipamento.
         equipamento = (
             self.equipamento_service
             .buscar_por_id(id_equipamento)
@@ -210,7 +219,6 @@ class EmprestimoService:
                 "Equipamento não encontrado."
             )
 
-        # Verifica disponibilidade.
         quantidade_disponivel = (
             self.equipamento_service
             .quantidade_disponivel(
@@ -224,7 +232,6 @@ class EmprestimoService:
                 "Equipamento indisponível."
             )
 
-        # Verifica prazo para nova solicitação.
         if equipamento.ultima_devolucao:
 
             ultima_devolucao = datetime.fromisoformat(
@@ -248,7 +255,6 @@ class EmprestimoService:
                     "do prazo para nova solicitação."
                 )
 
-        # Cria o empréstimo.
         agora = datetime.now()
 
         data_prevista = (
@@ -314,8 +320,6 @@ class EmprestimoService:
             Emprestimo.STATUS_DEVOLVIDO
         )
 
-        # Atualiza a data da última devolução
-        # do equipamento.
         equipamento = (
             self.equipamento_service
             .buscar_por_id(

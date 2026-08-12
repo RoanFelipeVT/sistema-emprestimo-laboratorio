@@ -1,91 +1,28 @@
 [
     {
         "id": 1,
-        "matricula_aluno": "20232015020061",
-        "id_equipamento": 10,
-        "data_emprestimo": "2026-07-20T10:00:00",
-        "data_prevista_devolucao": "2026-07-28T10:00:00",
+        "matricula_aluno": "1234",
+        "id_equipamento": 1,
+        "data_emprestimo": "2026-08-12T11:45:50.598704",
+        "data_prevista_devolucao": "2026-08-19T11:45:50.598704",
         "status": "EMPRESTADO",
         "data_devolucao": null
     },
     {
         "id": 2,
-        "matricula_aluno": "20232015020061",
-        "id_equipamento": 9,
-        "data_emprestimo": "2026-07-25T14:30:00",
-        "data_prevista_devolucao": "2026-07-30T14:30:00",
+        "matricula_aluno": "5678",
+        "id_equipamento": 2,
+        "data_emprestimo": "2026-07-06T11:45:00",
+        "data_prevista_devolucao": "2026-07-13T11:45:00",
         "status": "EMPRESTADO",
         "data_devolucao": null
     },
     {
         "id": 3,
-        "matricula_aluno": "20232015020061",
-        "id_equipamento": 10,
-        "data_emprestimo": "2026-07-10T09:00:00",
-        "data_prevista_devolucao": "2026-07-18T09:00:00",
-        "status": "EMPRESTADO",
-        "data_devolucao": null
-    },
-    {
-        "id": 4,
-        "matricula_aluno": "20232015020061",
-        "id_equipamento": 9,
-        "data_emprestimo": "2026-07-15T16:00:00",
-        "data_prevista_devolucao": "2026-07-20T16:00:00",
-        "status": "DEVOLVIDO",
-        "data_devolucao": "2026-07-19T11:00:00"
-    },
-    {
-        "id": 5,
-        "matricula_aluno": "20232015020061",
-        "id_equipamento": 10,
-        "data_emprestimo": "2026-08-01T08:30:00",
-        "data_prevista_devolucao": "2026-08-09T08:30:00",
-        "status": "EMPRESTADO",
-        "data_devolucao": null
-    },
-    {
-        "id": 6,
-        "matricula_aluno": "2",
-        "id_equipamento": 21,
-        "data_emprestimo": "2026-08-11T12:02:30.456397",
-        "data_prevista_devolucao": "2026-08-13T12:02:30.456397",
-        "status": "EMPRESTADO",
-        "data_devolucao": null
-    },
-    {
-        "id": 7,
-        "matricula_aluno": "2",
-        "id_equipamento": 21,
-        "data_emprestimo": "2026-08-11T12:02:39.984192",
-        "data_prevista_devolucao": "2026-08-13T12:02:39.984192",
-        "status": "EMPRESTADO",
-        "data_devolucao": null
-    },
-    {
-        "id": 8,
-        "matricula_aluno": "2",
-        "id_equipamento": 21,
-        "data_emprestimo": "2026-08-11T12:02:53.782532",
-        "data_prevista_devolucao": "2026-08-13T12:02:53.782532",
-        "status": "EMPRESTADO",
-        "data_devolucao": null
-    },
-    {
-        "id": 9,
-        "matricula_aluno": "2",
-        "id_equipamento": 21,
-        "data_emprestimo": "2026-08-11T12:03:10.365178",
-        "data_prevista_devolucao": "2026-08-13T12:03:10.365178",
-        "status": "EMPRESTADO",
-        "data_devolucao": null
-    },
-    {
-        "id": 10,
-        "matricula_aluno": "2",
-        "id_equipamento": 21,
-        "data_emprestimo": "2026-08-11T12:03:13.021438",
-        "data_prevista_devolucao": "2026-08-13T12:03:13.021438",
+        "matricula_aluno": "9012",
+        "id_equipamento": 3,
+        "data_emprestimo": "2026-07-10T09:30:00",
+        "data_prevista_devolucao": "2026-07-17T09:30:00",
         "status": "EMPRESTADO",
         "data_devolucao": null
     }

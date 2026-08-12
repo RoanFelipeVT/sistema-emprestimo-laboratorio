@@ -26,7 +26,7 @@ Se o cliente esperasse que o administrador precisasse aprovar cada solicitação
 
 ## 1.6 Ausência de solicitações pendentes
 
-O pedido não especifica a necessidade de um estado intermediário para solicitações de empréstimo. Assumimos que **não existirá o status `PENDENTE`** no sistema.
+O pedido não especifica a necessidade de um estado intermediário para solicitações de empréstimo. Assumimos que **não existirá o status** **`PENDENTE`** no sistema.
 
 Quando o aluno solicita um equipamento e todas as regras são atendidas, o empréstimo é registrado diretamente como **`EMPRESTADO`**. Caso alguma regra não seja atendida, a solicitação é recusada e nenhum empréstimo é criado.
 
@@ -34,7 +34,7 @@ Se o cliente esperasse que uma solicitação aguardasse aprovação administrati
 
 ## 1.7 Controle de empréstimos ativos
 
-Assumimos que um empréstimo será considerado **ativo enquanto possuir o status `EMPRESTADO`**.
+Assumimos que um empréstimo será considerado **ativo enquanto possuir o status** **`EMPRESTADO`**.
 
 Quando o administrador registrar a devolução, o status será alterado para **`DEVOLVIDO`**, fazendo com que o empréstimo deixe de ser considerado ativo.
 
@@ -62,7 +62,7 @@ Se o cliente esperasse integração com algum sistema acadêmico, seria necessá
 
 ## 1.11 Conta administrativa inicial
 
-O pedido informa que o técnico precisa realizar operações no sistema, mas não especifica como será feita sua autenticação. Assumimos que existirá uma **conta administrativa inicial com username `admin` e senha padrão `admin`**.
+O pedido informa que o técnico precisa realizar operações no sistema, mas não especifica como será feita sua autenticação. Assumimos que existirá uma **conta administrativa inicial com username** **`admin`** **e senha padrão** **`admin`**.
 
 Se o cliente esperasse autenticação integrada com outro sistema, seria necessário alterar a forma de autenticação administrativa.
 
@@ -230,17 +230,19 @@ Se o cliente esperasse que os dados fossem armazenados em um banco de dados comp
 
 # 2. Perguntas ao cliente
 
-## 2.1 Como o laboratório identifica cada equipamento: por unidade física individual ou por quantidade de um mesmo tipo?
+## 2.1 Quantos usuários administrativos o sistema deve possuir?
 
-**Resposta possível 1: Cada unidade física possui identificação individual.**
+O pedido informa que o técnico precisa utilizar o sistema, mas não especifica se haverá apenas um usuário administrativo ou se diferentes técnicos poderão possuir contas próprias.
 
-Nesse caso, seria necessário permitir que cada unidade de equipamento possua um identificador próprio e seja cadastrada individualmente no sistema.
+**Resposta possível 1: O sistema possuirá apenas um administrador.**
 
-**Resposta possível 2: Equipamentos do mesmo tipo são identificados por quantidade.**
+Nesse caso, o sistema poderá utilizar uma única conta administrativa para realizar operações como cadastrar equipamentos, registrar devoluções e consultar os empréstimos. A autenticação administrativa poderá ser vinculada a uma única credencial.
 
-Nesse caso, seria necessário permitir que um único cadastro represente várias unidades do mesmo equipamento, controlando a quantidade total e a quantidade disponível.
+**Resposta possível 2: O sistema permitirá vários administradores, cada um com sua própria conta.**
 
-A pergunta é relevante porque a resposta altera diretamente a forma de cadastro dos equipamentos, o controle de disponibilidade e o registro dos empréstimos.
+Nesse caso, será necessário criar e armazenar múltiplas contas administrativas, permitindo que cada técnico possua suas próprias credenciais. A estrutura de autenticação deverá deixar de depender de uma única conta fixa e poderá ser necessário identificar qual administrador realizou cada operação.
+
+A pergunta é relevante porque altera diretamente o modelo de autenticação e, no caso de múltiplos administradores, pode exigir o armazenamento de usuários administrativos e a associação das operações realizadas às respectivas contas.
 
 ---
 
@@ -308,27 +310,19 @@ A pergunta é relevante porque altera o fluxo de cadastro e a forma como os dado
 
 # 4. Decisões da ferramenta de IA
 
-Durante o desenvolvimento do sistema foi utilizado um assistente de IA para auxiliar na estruturação do projeto e na implementação do código.
+Durante o desenvolvimento do sistema foi utilizado um assistente de IA para auxiliar na estruturação do projeto e na implementação do código. 
 
-Uma decisão identificada no código gerado pelo assistente foi a criação de uma **conta administrativa inicial com username `admin` e senha `admin`**.
+Uma decisão identificado no código foi a implementação da regra que **equipamentos não podem ser removidos enquanto estiverm associados a empréstimos ativos** Essa regra evita que um equipamento atualmente utilizado por um aluno seja excluído do cadastro e deixe um empréstimo ativo sem uma referência válida ao equipamento.
 
-Essa decisão não foi solicitada explicitamente pelo grupo no pedido inicial. Ela é plausível porque o sistema precisa possuir alguma forma de acesso administrativo e o projeto precisa ter uma maneira simples de realizar o primeiro acesso durante os testes.
 
-Entretanto, essa decisão pode ser inadequada para o cliente porque uma senha padrão simples como `admin` não é adequada para um sistema real. Por isso, foi definida adicionalmente a exigência de que o administrador **altere a senha padrão no primeiro acesso**.
+Uma decisão identificada no código gerado pelo assistente foi a criação de uma **conta administrativa inicial com username** **`admin`** **e senha** **`admin`**.
 
-Outra decisão introduzida durante a implementação foi a utilização de uma **interface de linha de comando com menus**, em vez de uma interface web ou gráfica. Essa escolha é plausível porque o enunciado permite explicitamente interfaces de linha de comando, e a CLI permite implementar o escopo mínimo com menor complexidade. A escolha foi posteriormente revisada pelo grupo e mantida conscientemente.
-
-Também foi definida durante a implementação a regra de que **equipamentos não podem ser removidos enquanto estiverem associados a empréstimos ativos**. Essa regra evita que um equipamento atualmente utilizado por um aluno seja excluído do cadastro e deixe um empréstimo ativo sem uma referência válida ao equipamento.
-
-Outra decisão implementada foi a ausência de um fluxo de aprovação administrativa. As solicitações aceitas pelo sistema são registradas diretamente como `EMPRESTADO`, não existindo o estado `PENDENTE`. Essa escolha simplifica o fluxo de empréstimo e evita a criação de uma etapa administrativa que não foi exigida pelo pedido.
-
-As decisões geradas ou sugeridas pela ferramenta de IA foram revisadas pelo grupo e incorporadas somente quando consideradas adequadas ao escopo e às decisões assumidas no projeto.
 
 ---
 
 # 5. Registro de tempo
 
-Horas escrevendo ou gerando código: **2 horas**
+Horas escrevendo ou gerando código: **3 horas**
 
 Horas decidindo o que o sistema deveria fazer: **3 horas e meia**
 
